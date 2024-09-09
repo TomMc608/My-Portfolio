@@ -1,0 +1,13 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+/Website/node_modules
+
+# Build output
+/Website/dist
+
+# Miscellaneous
+.DS_Store
