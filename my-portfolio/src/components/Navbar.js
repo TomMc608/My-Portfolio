@@ -1,19 +1,23 @@
-// File: src/components/Navbar.js
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <nav>
+    <nav className="navbar">
       <div className="container">
-        <Link href="/" style={{ color: 'white', textDecoration: 'none', fontSize: '1.2rem', fontWeight: 'bold' }}>
-          Your Name
-        </Link>
-        <ul style={{ float: 'right' }}>
-          <li><Link href="/#about">About</Link></li>
-          <li><Link href="/#projects">Projects</Link></li>
-          <li><Link href="/#contact">Contact</Link></li>
-          <li><Link href="/ai-models">AI Models</Link></li>
+        <ul className={isMenuOpen ? 'nav-links open' : 'nav-links'}>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/projects">Projects</Link></li>
+          <li><Link href="/about">About</Link></li>
+          <li><Link href="/contact">Contact</Link></li>
         </ul>
+        <button className="menu-toggle" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          ☰
+        </button>
       </div>
     </nav>
   );
