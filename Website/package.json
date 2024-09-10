@@ -15,7 +15,6 @@
     "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "react-refresh": "^0.10.0",
     "@babel/core": "^7.20.0",
     "@babel/preset-env": "^7.20.0",
     "@babel/runtime": "^7.20.0",
