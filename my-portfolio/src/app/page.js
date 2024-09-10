@@ -30,7 +30,7 @@ export default function Home() {
       title: 'Contact', 
       description: 'Get in touch with me for collaborations or inquiries.',
       linkText: 'Contact Me',
-      link: '/contact'
+      link: '/about#contact'
     },
   ]
 
