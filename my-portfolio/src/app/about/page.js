@@ -1,5 +1,6 @@
-// pages/about.js or app/about/page.js (depending on your Next.js version)
 import Image from 'next/image';
+import Link from 'next/link';
+import profilePic from './me.png';
 
 export const metadata = {
   title: 'About Me - Tom McIver',
@@ -14,10 +15,11 @@ export default function About() {
       <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
         <div className="w-64 h-64 relative rounded-full overflow-hidden shadow-lg">
           <Image
-            src="" 
+            src={profilePic}
             alt="Tom McIver"
-            layout="fill"
-            objectFit="cover"
+            fill
+            style={{ objectFit: 'cover' }}
+            priority
           />
         </div>
         
@@ -55,13 +57,33 @@ export default function About() {
       </div>
       
       <div className="mt-8 text-center">
-        <p className="text-xl">
-          Feel free to explore my research and projects, and if you'd like to connect, don't hesitate to reach out!
-        </p>
-        <a href="mailto:tom.mciver@example.com" className="inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300">
-          Get in Touch
-        </a>
-      </div>
+  <h3 className="text-2xl font-semibold mb-4">Get in Touch</h3>
+  <div className="flex justify-center space-x-4">
+    <Link 
+      href="https://www.linkedin.com/in/tom-mciver-89171a278/" 
+      className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+        <rect x="2" y="9" width="4" height="12"></rect>
+        <circle cx="4" cy="4" r="2"></circle>
+      </svg>
+      <span>LinkedIn</span>
+    </Link>
+    <Link 
+      href="mailto:tomm9010@gmail.com" 
+      className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      <span>Email</span>
+    </Link>
+  </div>
+</div>
     </div>
   );
 }
