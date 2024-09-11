@@ -28,12 +28,41 @@ export default function UploadAndPredict() {
         }
     };
 
-    const filteredResultData = resultData && JSON.stringify(resultData, null, 2)
-        .replace(/char/g, "")
-        .replace(/(\w)\//g, "$1")
-        .replace(/\[|\]/g, "")
-        .replace(/\//g, "");
 
+    
+        const cleanResultData = (data) => {
+            // Recursively remove unwanted keys (like "char")
+            const removeKeys = (obj, keyToRemove) => {
+                if (Array.isArray(obj)) {
+                    return obj.map(item => removeKeys(item, keyToRemove));
+                } else if (typeof obj === 'object' && obj !== null) {
+                    return Object.fromEntries(
+                        Object.entries(obj)
+                            .filter(([key, value]) => key !== keyToRemove)
+                            .map(([key, value]) => [key, removeKeys(value, keyToRemove)])
+                    );
+                }
+                return obj;
+            };
+
+            // Remove the "char" key from resultData
+            const cleanedData = removeKeys(data, "char").map(item => item.replace(/\n/g, ' '));
+
+            console.log(cleanedData);
+
+            // Convert cleaned data back to JSON and remove unwanted characters like brackets and slashes
+            return cleanedData.map(item => JSON.stringify(item, null, 2)
+                .replace(/\[|\]/g, "")
+                .replace(/\//g, "")
+                .replace(/"/g, "")
+                .replace(/\n\//g, "")
+                .trim()
+            );
+        };
+    
+    const filteredResultData = resultData && cleanResultData(resultData);
+    
+        
     return (
         <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Image Prediction</h2>
