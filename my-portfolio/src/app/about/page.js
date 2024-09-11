@@ -14,7 +14,7 @@ export default function About() {
       <div className="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
         <div className="w-64 h-64 relative rounded-full overflow-hidden shadow-lg">
           <Image
-            src="/tom-mciver.jpg" // Replace with your actual image path
+            src="" 
             alt="Tom McIver"
             layout="fill"
             objectFit="cover"
