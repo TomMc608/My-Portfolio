@@ -1,63 +1,80 @@
-// /src/components/UploadAndPredict.js
 "use client";
 
 import { useRef, useState } from "react";
-import styles from "../app/styles/ProjectDetail.module.css";
 
 export default function UploadAndPredict() {
-  const fileInputRef = useRef(null);
-  const [resultData, setResultData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+    const fileInputRef = useRef(null);
+    const [resultData, setResultData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [fileName, setFileName] = useState("");
 
-  const handleFileUpload = async () => {
-    const file = fileInputRef.current.files[0];
+    const handleFileUpload = async () => {
+        const file = fileInputRef.current.files[0];
+        if (!file) return;
+        setIsLoading(true);
+        setFileName(file.name);
 
-    if (!file) return;
+        try {
+            const { Client } = await import("@gradio/client");
+            const client = await Client.connect("TomMc9010/Cloud_AI_model");
+            const arrayBuffer = await file.arrayBuffer();
+            const blob = new Blob([arrayBuffer], { type: file.type });
+            const result = await client.predict("/predict", [blob]);
+            setResultData(result.data);
+        } catch (error) {
+            console.error("Error while uploading image:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
-    setIsLoading(true);
+    const filteredResultData = resultData && JSON.stringify(resultData, null, 2)
+        .replace(/char/g, "")
+        .replace(/(\w)\//g, "$1")
+        .replace(/\[|\]/g, "")
+        .replace(/\//g, "");
 
-    try {
-      // Dynamically import the Gradio client
-      const { Client } = await import("@gradio/client");
-      
-      // Create a new Gradio client
-      const client = await Client.connect("TomMc9010/Cloud_AI_model");
-
-      // Read the file as an ArrayBuffer
-      const arrayBuffer = await file.arrayBuffer();
-      // Convert ArrayBuffer to Blob
-      const blob = new Blob([arrayBuffer], { type: file.type });
-
-      // Make the prediction using the Gradio client
-      const result = await client.predict("/predict", [blob]);
-
-      // Store the result data
-      setResultData(result.data);
-    } catch (error) {
-      console.error("Error while uploading image:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <div className={styles.container}>
-      <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        className={styles.fileInput}
-      />
-      <button onClick={handleFileUpload} className={styles.uploadButton}>
-        Upload Image
-      </button>
-      {isLoading && <p>Loading...</p>}
-      {resultData && (
-        <div className={styles.resultContainer}>
-          <h2>Prediction Result:</h2>
-          <pre>{JSON.stringify(resultData, null, 2)}</pre>
+    return (
+        <div className="max-w-2xl mx-auto p-6 bg-white rounded-xl shadow-md">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">Image Prediction</h2>
+            <div className="mb-6">
+                <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-2">
+                    Choose an image
+                </label>
+                <div className="flex items-center">
+                    <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        onChange={handleFileUpload}
+                        className="hidden"
+                    />
+                    <label
+                        htmlFor="file-upload"
+                        className="cursor-pointer bg-blue-500 text-white py-2 px-4 rounded-l hover:bg-blue-600 transition duration-300"
+                    >
+                        Browse
+                    </label>
+                    <span className="border border-gray-300 rounded-r py-2 px-4 bg-gray-50 text-gray-500 flex-grow">
+                        {fileName || "No file chosen"}
+                    </span>
+                </div>
+            </div>
+            {isLoading && (
+                <div className="flex items-center justify-center py-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                    <span className="ml-2 text-gray-600">Processing...</span>
+                </div>
+            )}
+            {filteredResultData && (
+                <div className="mt-6 bg-gray-50 p-4 rounded-lg">
+                    <h3 className="text-lg font-semibold mb-2 text-gray-700">Prediction Result:</h3>
+                    <pre className="bg-white p-3 rounded border border-gray-200 text-sm overflow-x-auto">
+                        {filteredResultData}
+                    </pre>
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }
