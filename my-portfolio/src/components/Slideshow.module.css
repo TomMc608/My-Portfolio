@@ -1,0 +1,37 @@
+/* /src/components/Slideshow.module.css */
+.slideshowContainer {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .slide {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .code {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: left;
+    overflow-x: auto;
+    max-width: 90%;
+    margin: 0 auto;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .buttons button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .buttons button:hover {
+    background-color: #ddd;
+  }
+  

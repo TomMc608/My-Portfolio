@@ -1,6 +1,7 @@
 // /src/app/projects/[id]/page.js
 import styles from "../../styles/ProjectDetail.module.css";
-import UploadAndPredict from "../../../components/UploadAndPredict"; // Import Client Component
+import UploadAndPredict from "../../../components/UploadAndPredict";
+import Slideshow from "../../../components/Slideshow"; // Import the updated Slideshow component
 
 export async function generateStaticParams() {
   return [{ id: "cloud-ai-model" }];
@@ -14,7 +15,10 @@ export default function Project() {
         The AI model for this project is currently under development. Please check back later!
       </p>
 
-      {/* Render the Client Component */}
+      {/* Render the Slideshow Component */}
+      <Slideshow />
+
+      {/* Render the Upload and Predict Component */}
       <UploadAndPredict />
     </div>
   );
